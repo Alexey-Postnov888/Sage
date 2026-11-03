@@ -3,6 +3,7 @@ plugins {
     kotlin("plugin.spring") version "2.3.21"
     id("org.springframework.boot") version "4.1.2"
     id("io.spring.dependency-management") version "1.1.7"
+    kotlin("plugin.jpa") version "2.3.21"
 }
 
 group = "ru.sage"
@@ -22,10 +23,18 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+    implementation("org.postgresql:postgresql")
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-database-postgresql")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    implementation("me.paulschwarz:springboot4-dotenv:5.0.1")
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(kotlin("test"))
 }
 
 kotlin {
