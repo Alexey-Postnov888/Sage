@@ -45,7 +45,6 @@ class RecognitionResultRepositoryAdapter (
             id = domain.id,
             noteId = domain.noteId,
             fileId = domain.fileId,
-            fileUrl = domain.fileUrl,
             text = domain.text
         )
     }
@@ -55,7 +54,6 @@ class RecognitionResultRepositoryAdapter (
             id = entity.id,
             noteId = entity.noteId,
             fileId = entity.fileId,
-            fileUrl = entity.fileUrl,
             text = entity.text
         )
     }
