@@ -6,6 +6,7 @@ services:
       - "5455:5432"
     volumes:
       - postgres_registry_data:/var/lib/postgresql
+    restart: unless-stopped
 
   registry-service:
     build: ./RegistryService
@@ -18,6 +19,24 @@ services:
       SPRING_PROFILES_ACTIVE: default
     depends_on:
       - postgres-registry
+    restart: unless-stopped
+
+  summary-service:
+    build: ./SummaryService
+    ports:
+      - "8084:8080"
+    environment:
+      - YANDEX_FOLDER=${YANDEX_FOLDER}
+      - YANDEX_API_KEY=${YANDEX_API_KEY}
+      - YANDEX_MODEL=${YANDEX_MODEL}
+    restart: unless-stopped
+
+  voice-service:
+    build: ./VoiceService
+    ports:
+      - "8086:8000"
+    volumes:
+      - ./whisper_cache:/root/.cache/huggingface/hub
     restart: unless-stopped
 
 volumes:

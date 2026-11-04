@@ -1,5 +1,3 @@
-#ВАЖНО: в docker-compose.yml  добавить volumes, чтобы сохранять модель
-
 FROM python:3.12-slim
 
 # Устанавливаем только ffmpeg (без gcc!)
