@@ -1,0 +1,1 @@
+Please copy ```env/example/.env.*.example``` to ```env/.env.*``` and modify it

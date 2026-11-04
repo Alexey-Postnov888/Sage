@@ -1,0 +1,26 @@
+services:
+  postgres-registry:
+    image: postgres:18
+    env_file:
+      - RegistryService/env/.env.local
+      - RegistryService/env/.env
+    ports:
+      - "5455:5432"
+    volumes:
+      - postgres_registry_data:/var/lib/postgresql
+
+  registry-service:
+    build: ./RegistryService
+    ports:
+      - "8085:8080"
+    env_file:
+      - RegistryService/env/.env.docker
+      - RegistryService/env/.env
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+    depends_on:
+      - postgres-registry
+    restart: unless-stopped
+
+volumes:
+  postgres_registry_data:
