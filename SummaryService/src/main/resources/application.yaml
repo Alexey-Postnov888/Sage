@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: SummaryService
+
+server:
+  port: 8080
+
+yandex:
+  cloud:
+    folder: ${YANDEX_FOLDER}
+    api-key: ${YANDEX_API_KEY}
+    model: ${YANDEX_MODEL}
