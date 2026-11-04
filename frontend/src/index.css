@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* Кастомный скроллбар */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #444;
+}
+
+/* Анимация для контекстного меню */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+    animation: fadeIn 0.1s ease-out forwards;
+}
+
+/* =========================================
+   СТИЛИ ДЛЯ MD-EDITOR
+   ========================================= */
+
+.custom-md-editor .w-md-editor {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Левая панель (ввод) */
+.custom-md-editor .w-md-editor-text-input,
+.custom-md-editor .w-md-editor-text-pre,
+.custom-md-editor .w-md-editor-text {
+    background-color: transparent !important;
+    color: #d4d4d4 !important;
+}
+
+.custom-md-editor .w-md-editor-text-pre > code,
+.custom-md-editor .w-md-editor-text-input,
+.custom-md-editor .w-md-editor-text {
+    font-family: 'Consolas', 'Courier New', monospace !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+}
+
+.custom-md-editor .w-md-editor-toolbar {
+    background-color: #1e1e1e !important;
+    border-bottom: 1px solid #2a2a2a !important;
+}
+
+.custom-md-editor .w-md-editor-toolbar ul:last-child {
+    display: none !important;
+}
+
+/* Правая панель (предпросмотр) */
+.custom-md-editor .w-md-editor-preview {
+    background-color: #181818 !important;
+    border-left: 1px solid #2a2a2a !important;
+    padding: 20px;
+}
+
+/* УБИРАЕМ ФОН У ТЕКСТА (тот самый "вордовский" эффект) */
+.custom-md-editor .w-md-editor-preview p,
+.custom-md-editor .w-md-editor-preview span,
+.custom-md-editor .w-md-editor-preview li,
+.custom-md-editor .w-md-editor-preview h1,
+.custom-md-editor .w-md-editor-preview h2,
+.custom-md-editor .w-md-editor-preview h3,
+.custom-md-editor .w-md-editor-preview h4,
+.custom-md-editor .w-md-editor-preview h5,
+.custom-md-editor .w-md-editor-preview h6,
+.custom-md-editor .w-md-editor-preview div {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #d4d4d4 !important;
+}
+
+/* Исключение для инлайн-кода (в одинарных кавычках), ему можно оставить фон */
+.custom-md-editor .w-md-editor-preview code {
+    background-color: #2a2a2a !important;
+    color: #e2e8f0 !important;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+/* Блоки кода (тройные кавычки) */
+.custom-md-editor .w-md-editor-preview pre {
+    background-color: #1e1e1e !important;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 6px;
+}
+.custom-md-editor .w-md-editor-preview pre code {
+    background-color: transparent !important;
+    padding: 0;
+}
+
+/* Заголовки (справа) */
+.custom-md-editor .w-md-editor-preview h1,
+.custom-md-editor .w-md-editor-preview h2 {
+    color: #fff !important;
+    border-bottom: 1px solid #333 !important;
+    padding-bottom: 5px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
