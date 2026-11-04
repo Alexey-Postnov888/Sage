@@ -39,6 +39,88 @@ services:
       - ./whisper_cache:/root/.cache/huggingface/hub
     restart: unless-stopped
 
+  postgres_ocr:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_OCR_DB}
+      POSTGRES_USER: ${POSTGRES_OCR_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_OCR_PASSWORD}
+    volumes:
+      - ocr_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  ocr-service:
+    build: ./OcrService
+    environment:
+      POSTGRES_DB: ${POSTGRES_OCR_URL}
+      POSTGRES_USER: ${POSTGRES_OCR_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_OCR_PASSWORD}
+
+      YANDEX_CLOUD_FOLDER: ${YANDEX_FOLDER_ID}
+      YANDEX_CLOUD_API_KEY: ${YANDEX_API_KEY}
+      YANDEX_CLOUD_MODEL: ${YANDEX_OCR_MODEL}
+
+      S3_ENDPOINT: ${S3_ENDPOINT}
+      S3_ACCESS_KEY: ${AWS_ACCESS_KEY_ID}
+      S3_SECRET_KEY: ${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "8089:8080"
+      - "9099:9090"
+    depends_on:
+      - postgres_ocr
+    restart: unless-stopped
+
+  postgres_content:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ${POSTGRES_CONTENT_DB}
+      POSTGRES_USER: ${POSTGRES_CONTENT_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_CONTENT_PASSWORD}
+    volumes:
+      - content_data:/var/lib/postgresql/18/docker
+    restart: unless-stopped
+
+  seaweedfs:
+    image: chrislusf/seaweedfs:4.51
+    container_name: seaweedfs
+    command:
+      - mini
+      - -dir=/data
+      - -s3.externalUrl=http://seaweedfs:8333
+      - -master.telemetry=false
+      - -admin.password=${AWS_ADMIN_PASSWORD}
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - S3_BUCKET=${S3_BUCKET}
+    ports:
+      - "8333:8333"     # S3 API
+      - "12535:12535"   # Admin UI
+    volumes:
+      - seaweedfs-data:/data
+    restart: unless-stopped
+
+  content-service:
+    build: ./ContentService
+    environment:
+      POSTGRES_CONTENT_HOST: postgres_content
+      POSTGRES_CONTENT_DB: ${POSTGRES_CONTENT_DB}
+      POSTGRES_CONTENT_USER: ${POSTGRES_CONTENT_USER}
+      POSTGRES_CONTENT_PASSWORD: ${POSTGRES_CONTENT_PASSWORD}
+
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+      S3_BUCKET: ${S3_BUCKET}
+      S3_ENDPOINT: ${S3_ENDPOINT}
+    ports:
+      - "8087:8080"
+      - "9097:9090"
+    depends_on:
+      - postgres_content
+      - seaweedfs
+    restart: unless-stopped
+
   frontend:
     build: ./frontend
     ports:
@@ -52,3 +134,6 @@ services:
 
 volumes:
   postgres_registry_data:
+  ocr_data:
+  content_data:
+  seaweedfs-data:
