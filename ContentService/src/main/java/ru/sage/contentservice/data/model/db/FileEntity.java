@@ -19,6 +19,8 @@ public class FileEntity {
 
     public static final Field<String> filename = DSL.field("filename", String.class);
 
+    public static final Field<String> bucket = DSL.field("bucket", String.class);
+
     public static final Field<String> key = DSL.field("key", String.class);
 
     public static final Field<String> url = DSL.field("url", String.class);

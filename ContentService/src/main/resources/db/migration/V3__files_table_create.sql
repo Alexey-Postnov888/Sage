@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS files
     note_id uuid NOT NULL,
     fid character varying COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,
     filename character varying COLLATE pg_catalog."default" NOT NULL,
+    bucket character varying COLLATE pg_catalog."default" NOT NULL,
     key character varying COLLATE pg_catalog."default" NOT NULL,
     url character varying COLLATE pg_catalog."default" NOT NULL DEFAULT ''::character varying,
     extension character varying COLLATE pg_catalog."default" NOT NULL,

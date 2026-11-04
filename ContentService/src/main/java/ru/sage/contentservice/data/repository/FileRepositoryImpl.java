@@ -20,10 +20,11 @@ public class FileRepositoryImpl implements FileRepository {
     FileRepositoryImpl(DSLContext dslContext) { this.dslContext = dslContext; }
 
     @Override
-    public void createFile(UUID noteId, String filename, String key, String extension, String mimeType, long size) {
+    public void createFile(UUID noteId, String filename, String bucket, String key, String extension, String mimeType, long size) {
         dslContext.insertInto(FileEntity.TABLE)
                 .set(FileEntity.noteId, noteId)
                 .set(FileEntity.filename, filename)
+                .set(FileEntity.bucket, bucket)
                 .set(FileEntity.key, key)
                 .set(FileEntity.extension, extension)
                 .set(FileEntity.mimeType, mimeType)

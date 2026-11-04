@@ -60,7 +60,7 @@ public class FileUseCaseImpl implements FileUseCase {
             service.upload(bucket, key, file);
 
             //Сохраняем инфу о файле в бд
-            fileRepository.createFile(noteId, filename, key, extension, mimeType, size);
+            fileRepository.createFile(noteId, filename, bucket, key, extension, mimeType, size);
 
             return key;
         }

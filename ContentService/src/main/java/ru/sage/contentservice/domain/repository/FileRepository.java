@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface FileRepository {
 
-    void createFile(UUID noteId, String filename, String key, String extension, String mimeType, long size);
+    void createFile(UUID noteId, String filename, String bucket, String key, String extension, String mimeType, long size);
     List<FileDomain> getAllFiles();
     FileDomain getFileById(UUID id);
     void deleteFile(UUID id);

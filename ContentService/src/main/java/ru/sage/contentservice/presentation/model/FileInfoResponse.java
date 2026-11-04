@@ -11,6 +11,7 @@ public record FileInfoResponse(
         UUID noteId,
         String fid,
         String filename,
+        String bucket,
         String key,
         String url,
         String extension,
