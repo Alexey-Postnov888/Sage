@@ -21,9 +21,6 @@ class RecognitionResultEntity(
     @Column(nullable = false)
     var fileId: UUID,
 
-    @Column(nullable = false)
-    var fileUrl: String,
-
     @Column(columnDefinition = "TEXT", nullable = true)
     var text: String?
 )

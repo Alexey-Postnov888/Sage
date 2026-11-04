@@ -25,8 +25,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     implementation("org.postgresql:postgresql")
-    implementation("org.flywaydb:flyway-core")
-    implementation("org.flywaydb:flyway-database-postgresql")
+    implementation("software.amazon.awssdk:s3:2.25.50")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 
     implementation("me.paulschwarz:springboot4-dotenv:5.0.1")

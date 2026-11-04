@@ -5,5 +5,6 @@ import java.util.UUID
 data class GetRecognitionRequest(
     val noteId: UUID,
     val fileId: UUID,
-    val fileUrl: String
+    val bucketName: String,
+    val objectKey: String
 )

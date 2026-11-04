@@ -12,7 +12,6 @@ import ru.sage.ocrservice.domain.usecase.GetResultRecognitionByFileIdUseCase
 import ru.sage.ocrservice.domain.usecase.GetResultRecognitionByNoteIdUseCase
 import ru.sage.ocrservice.presentation.mappers.toPresentation
 import ru.sage.ocrservice.presentation.model.ErrorResponse
-import ru.sage.ocrservice.presentation.model.RecognitionResponsePresentation
 import java.util.UUID
 
 @RestController
@@ -28,7 +27,8 @@ class RecognitionController (
         val result = getRecognitionUseCase.execute(
             noteId = request.noteId,
             fileId = request.fileId,
-            fileUrl = request.fileUrl
+            bucketName = request.bucketName,
+            objectKey = request.objectKey
         )
         if (result != null){
             return result.toPresentation()

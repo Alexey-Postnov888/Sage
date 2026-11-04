@@ -8,7 +8,7 @@ import ru.sage.ocrservice.domain.service.OcrExternalService
 import java.util.UUID
 
 interface GetRecognitionUseCase {
-    fun execute(noteId: UUID, fileId: UUID, fileUrl: String): RecognitionResult?
+    fun execute(noteId: UUID, fileId: UUID, bucketName: String, objectKey: String,): RecognitionResult?
 }
 
 @Service
@@ -20,20 +20,23 @@ class GetRecognitionUseCaseImpl(
     override fun execute(
         noteId: UUID,
         fileId: UUID,
-        fileUrl: String,
+        bucketName: String,
+        objectKey: String,
     ): RecognitionResult? {
 
         if(repository.findByFileId(fileId) != null) {
             return repository.findByFileId(fileId)
         }
 
-        val fileByte = fileDownloadService.downloadFile(fileUrl)
+        val fileByte = fileDownloadService.downloadFile(
+            bucketName = bucketName,
+            objectKey = objectKey
+        )
         val text = ocrExternalService.extractText(fileByte)
 
         val result = RecognitionResult(
             noteId = noteId,
             fileId = fileId,
-            fileUrl = fileUrl,
             text = text
         )
 

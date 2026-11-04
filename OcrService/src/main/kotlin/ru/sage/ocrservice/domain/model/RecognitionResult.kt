@@ -6,6 +6,5 @@ data class RecognitionResult(
     val id: UUID? = null,
     val noteId: UUID,
     val fileId: UUID,
-    val fileUrl: String,
     val text: String?
 )

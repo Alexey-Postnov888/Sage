@@ -1,5 +1,5 @@
 package ru.sage.ocrservice.domain.service
 
 interface FileDownloadService {
-    fun downloadFile(fileUrl: String): ByteArray
+    fun downloadFile(bucketName: String, objectKey: String): ByteArray
 }
