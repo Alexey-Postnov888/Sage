@@ -1,0 +1,26 @@
+services:
+  postgres_reminder:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_REMINDER_DB}
+      POSTGRES_USER: ${POSTGRES_REMINDER_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_REMINDER_PASSWORD}
+    volumes:
+      - reminder_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  reminder-service:
+    build: ./ReminderService
+    environment:
+      POSTGRES_DB: ${POSTGRES_REMINDER_URL}
+      POSTGRES_USER: ${POSTGRES_REMINDER_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_REMINDER_PASSWORD}
+    ports:
+      - "8083:8080"
+      - "9099:9090"
+    depends_on:
+      - postgres_reminder
+    restart: unless-stopped
+
+volumes:
+  reminder_data:
