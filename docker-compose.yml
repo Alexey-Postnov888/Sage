@@ -39,5 +39,16 @@ services:
       - ./whisper_cache:/root/.cache/huggingface/hub
     restart: unless-stopped
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - summary-service
+      - voice-service
+
 volumes:
   postgres_registry_data:

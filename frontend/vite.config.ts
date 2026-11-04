@@ -12,11 +12,11 @@ export default defineConfig({
     },
     proxy: {
       '/api/voice': {
-        target: 'http://voice-service:8081',
+        target: 'http://voice-service:8086',
         changeOrigin: true,
       },
       '/api/summarize': {
-        target: 'http://summary-service:8080',
+        target: 'http://summary-service:8084',
         changeOrigin: true,
       }
     }
