@@ -36,3 +36,6 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+ext["jackson-bom.version"] = "3.1.8"
+ext["jackson-2-bom.version"] = "2.21.8"

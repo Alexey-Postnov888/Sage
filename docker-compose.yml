@@ -1,4 +1,31 @@
 services:
+  postgres_ocr:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_OCR_DB}
+      POSTGRES_USER: ${POSTGRES_OCR_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_OCR_PASSWORD}
+    volumes:
+      - ocr_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  ocr-service:
+    build: ./OcrService
+    environment:
+      POSTGRES_DB: ${POSTGRES_OCR_URL}
+      POSTGRES_USER: ${POSTGRES_OCR_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_OCR_PASSWORD}
+
+      YANDEX_CLOUD_FOLDER: ${YANDEX_FOLDER_ID}
+      YANDEX_CLOUD_API_KEY: ${YANDEX_API_KEY}
+      YANDEX_CLOUD_MODEL: ${YANDEX_OCR_MODEL}
+    ports:
+      - "8089:8080"
+      - "9099:9090"
+    depends_on:
+      - postgres_ocr
+    restart: unless-stopped
+
   postgres_content:
     image: postgres:18
     environment:
@@ -15,7 +42,7 @@ services:
     command:
       - mini
       - -dir=/data
-      - -s3.externalUrl=http://localhost:8333
+      - -s3.externalUrl=http://seaweedfs:8333
       - -master.telemetry=false
       - -admin.password=${AWS_ADMIN_PASSWORD}
     environment:
@@ -51,5 +78,6 @@ services:
     restart: unless-stopped
 
 volumes:
+  ocr_data:
   content_data:
   seaweedfs-data:
