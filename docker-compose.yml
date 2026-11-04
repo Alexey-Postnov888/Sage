@@ -1,9 +1,7 @@
 services:
   postgres-registry:
     image: postgres:18
-    env_file:
-      - RegistryService/env/.env.local
-      - RegistryService/env/.env
+    env_file: RegistryService/env/.env
     ports:
       - "5455:5432"
     volumes:
