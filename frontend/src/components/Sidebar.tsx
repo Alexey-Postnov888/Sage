@@ -1,4 +1,4 @@
-import { Plus, FolderOpen } from 'lucide-react';
+import { Plus, Folder } from 'lucide-react';
 import { FolderItem } from './FolderItem';
 import { NewItemInput } from './NewItemInput';
 import { NoteItem } from './NoteItem';
@@ -7,7 +7,7 @@ import type { Note } from '../types';
 interface SidebarProps {
     notes: Note[];
     folders: string[];
-    activeNoteId: number | null;
+    activeNoteId: string | null;
     isCreatingFolder: boolean;
     isCreatingNote: { folder: string } | null;
     onStartCreateNote: (folder?: string) => void;
@@ -17,7 +17,7 @@ interface SidebarProps {
     onSaveNewNote: (title: string, folder: string) => void;
     onCancelCreateNote: () => void;
     onSelectNote: (note: Note) => void;
-    onRenameNote: (id: number, newTitle: string) => void;
+    onRenameNote: (id: string, newTitle: string) => void;
     onRenameFolder: (oldName: string, newName: string) => void;
     onContextMenu: (e: React.MouseEvent, context: any) => void;
 }
@@ -25,6 +25,7 @@ interface SidebarProps {
 export function Sidebar(props: SidebarProps) {
     const rootNotes = props.notes.filter(n => n.folder === 'root');
     const isCreatingRootNote = props.isCreatingNote?.folder === 'root';
+    const hasRootFolder = props.folders.includes('root');
 
     return (
         <div className="w-60 bg-[#181818] border-r border-[#2a2a2a] flex flex-col h-full z-10">
@@ -42,12 +43,12 @@ export function Sidebar(props: SidebarProps) {
 
             <div className="flex-1 overflow-y-auto p-2 custom-scrollbar">
 
-                {/* Блок "Без папки" (Корень) */}
-                {(rootNotes.length > 0 || isCreatingRootNote) && (
+                {/* Корневая папка (root) — показывается всегда */}
+                {hasRootFolder && (
                     <div className="mb-4">
                         <div className="flex items-center gap-1.5 p-1.5 text-gray-500">
-                            <FolderOpen size={14} className="text-gray-600" />
-                            <span className="text-xs font-medium tracking-wider">Без папки</span>
+                            <Folder size={14} className="text-gray-600" />
+                            <span className="text-xs font-medium tracking-wider">root</span>
                         </div>
                         <div className="ml-4 mt-1 space-y-0.5">
                             {isCreatingRootNote && (
@@ -71,7 +72,7 @@ export function Sidebar(props: SidebarProps) {
                     </div>
                 )}
 
-                {/* Список папок */}
+                {/* Остальные папки (кроме root) */}
                 {props.isCreatingFolder && (
                     <NewItemInput
                         type="folder"
@@ -80,7 +81,7 @@ export function Sidebar(props: SidebarProps) {
                     />
                 )}
 
-                {props.folders.map(folder => (
+                {props.folders.filter(f => f !== 'root').map(folder => (
                     <FolderItem
                         key={folder}
                         folder={folder}

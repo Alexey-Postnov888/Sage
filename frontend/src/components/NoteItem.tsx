@@ -13,14 +13,6 @@ export function NoteItem({ title, isActive, onClick, onContextMenu, onRename }: 
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(title);
 
-    // Слушаем кастомное событие для запуска переименования
-    // (костыль, но работает без прокидывания ref)
-    if (typeof window !== 'undefined') {
-        window.addEventListener('rename-note-trigger', (e: any) => {
-            if (e.detail === title) setIsEditing(true);
-        });
-    }
-
     const handleSave = () => {
         onRename(editValue);
         setIsEditing(false);
@@ -51,7 +43,7 @@ export function NoteItem({ title, isActive, onClick, onContextMenu, onRename }: 
         ${isActive ? 'bg-[#2a2a2a] text-gray-200 font-medium' : 'text-gray-500 hover:bg-[#1e1e1e] hover:text-gray-300'}`}
             onClick={onClick}
             onContextMenu={onContextMenu}
-            onDoubleClick={() => setIsEditing(true)} // Двойной клик для быстрого переименования
+            onDoubleClick={() => setIsEditing(true)}
         >
             <FileText size={14} className={isActive ? 'text-gray-400' : 'text-gray-600'} />
             <span className="truncate">{title}</span>

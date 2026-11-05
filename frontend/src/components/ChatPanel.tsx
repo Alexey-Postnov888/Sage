@@ -1,7 +1,8 @@
-import { X, Send, Bot, Sparkles, Mic, Loader2 } from 'lucide-react';
+import { X, Send, Bot, Sparkles, Loader2, FileScan } from 'lucide-react';
 import type { ChatMessage } from '../types';
 import { useRef, useEffect, useState } from 'react';
 import { ChatMessageItem } from './ChatMessageItem';
+import { VoiceRecorderButton } from './VoiceRecorderButton';
 
 interface ChatPanelProps {
     isOpen: boolean;
@@ -10,15 +11,18 @@ interface ChatPanelProps {
     onSendMessage: (text: string) => void;
     onSummarize: () => void;
     onRecordVoice: () => void;
+    onOcrFile: (file: File) => void;
     isRecording: boolean;
     isSummarizing: boolean;
+    isOcrLoading: boolean;
 }
 
 export function ChatPanel({
-                              isOpen, onClose, messages, onSendMessage, onSummarize, onRecordVoice, isRecording, isSummarizing
+                              isOpen, onClose, messages, onSendMessage, onSummarize, onRecordVoice, onOcrFile, isRecording, isSummarizing, isOcrLoading
                           }: ChatPanelProps) {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const [inputText, setInputText] = useState('');
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -28,6 +32,14 @@ export function ChatPanel({
         if (inputText.trim()) {
             onSendMessage(inputText.trim());
             setInputText('');
+        }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            onOcrFile(file);
+            if (fileInputRef.current) fileInputRef.current.value = '';
         }
     };
 
@@ -56,6 +68,13 @@ export function ChatPanel({
             </div>
 
             <div className="p-3 border-t border-[#2a2a2a] w-80 bg-[#181818]">
+                <input
+                    type="file"
+                    accept=".jpeg,.jpg,.png,.pdf"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                />
                 <div className="flex items-center bg-[#121212] border border-[#333] rounded-md px-2 py-1.5 focus-within:border-gray-600 transition-colors">
                     <input
                         type="text"
@@ -70,13 +89,25 @@ export function ChatPanel({
                             onClick={onSummarize}
                             disabled={isSummarizing}
                             className="text-gray-500 hover:text-purple-400 p-1 disabled:opacity-50"
+                            title="Суммаризировать"
                         >
                             {isSummarizing ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
                         </button>
-                        <button onClick={onRecordVoice} className={`p-1 ${isRecording ? 'text-red-500 animate-pulse' : 'text-gray-500 hover:text-red-400'}`}>
-                            <Mic size={16} />
+                        <button
+                            onClick={() => fileInputRef.current?.click()}
+                            disabled={isOcrLoading}
+                            className="text-gray-500 hover:text-blue-400 p-1 disabled:opacity-50"
+                            title="Распознать файл (OCR)"
+                        >
+                            {isOcrLoading ? <Loader2 size={16} className="animate-spin" /> : <FileScan size={16} />}
                         </button>
-                        <button onClick={handleSend} className="text-gray-500 hover:text-blue-400 p-1">
+
+                        <VoiceRecorderButton
+                            isRecording={isRecording}
+                            onClick={onRecordVoice}
+                        />
+
+                        <button onClick={handleSend} className="text-gray-500 hover:text-blue-400 p-1" title="Отправить">
                             <Send size={16} />
                         </button>
                     </div>

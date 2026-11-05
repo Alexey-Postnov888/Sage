@@ -7,10 +7,10 @@ import type { Note } from '../types';
 interface FolderItemProps {
     folder: string;
     notes: Note[];
-    activeNoteId: number | null;
+    activeNoteId: string | null; // <-- STRING
     onRenameFolder: (oldName: string, newName: string) => void;
     onSelectNote: (note: Note) => void;
-    onRenameNote: (id: number, newTitle: string) => void;
+    onRenameNote: (id: string, newTitle: string) => void; // <-- STRING
     onCreateNote: (title: string, folder: string) => void;
     onContextMenu: (e: React.MouseEvent, context: any) => void;
     isCreatingNoteHere: boolean;
@@ -25,11 +25,8 @@ export function FolderItem({
     const [isEditing, setIsEditing] = useState(false);
     const [editValue, setEditValue] = useState(folder);
 
-    // Автоматически разворачиваем папку, если в ней создается заметка
     useEffect(() => {
-        if (isCreatingNoteHere) {
-            setIsExpanded(true);
-        }
+        if (isCreatingNoteHere) setIsExpanded(true);
     }, [isCreatingNoteHere]);
 
     const handleSaveFolderName = () => {
