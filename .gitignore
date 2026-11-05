@@ -8,3 +8,4 @@ config/local.*
 AIGateway/__pycache__
 AIService/__pycache__
 ContentService/__pycache__
+/whisper_cache/
